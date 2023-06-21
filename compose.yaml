@@ -1,0 +1,52 @@
+version: "3.1"
+
+services:
+  service_1:
+    build:
+      dockerfile: ./service_1
+    depends_on:
+      - mysql
+    networks:
+      - net
+    ports:
+      - "5050:5050"
+
+  service_2:
+    build:
+      dockerfile: ./service_2
+    depends_on:
+      - mysql
+    networks:
+      - net
+    ports:
+      - "5051:5051"
+
+  service_3:
+    build:
+      dockerfile: ./service_3
+    depends_on:
+      - mysql
+    networks:
+      - net
+    ports:
+      - "5052:5052"
+
+  redis:
+    image: "redislabs/redismod"
+    ports:
+      - "6379:6379"
+
+  mysql:
+    image: mysql:alpine
+    restart: always
+    networks:
+      - net
+    environment:
+      - MYSQL_ROOT_PASSWORD=testrootpassword
+      - MYSQL_DATABASE=knex_test
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testpassword
+
+networks:
+  net:
+    driver: bridge
